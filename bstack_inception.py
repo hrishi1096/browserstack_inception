@@ -20,10 +20,47 @@ EXPLICIT_WAIT_TIME = 30
 WAIT = 3
 BSTACK_DEMO_AC_EMAIL = "hrishikesh.b+demo@browserstack.com"
 BSTACK_DEMO_AC_PASSWD = "Demoaccount@123"
+USERNAME = os.environ['BROWSERSTACK_USERNAME']
+ACCESSKEY = os.environ['BROWSERSTACK_ACCESS_KEY']
 
 
-def init():
-    driver = webdriver.Firefox()
+capabilities = [{
+        'os_version': '10',
+        'os': 'Windows',
+        'browser': 'firefox',
+        'browser_version': '94.0',
+        "browserstack.geoLocation": "IE",
+        # "browserstack.local" : "true",
+        'name': 'Firefox test',
+        'build': 'Browserstack_inception_geoloc_IE'
+    },
+    {
+        'os_version': 'Monterey',
+        'os': 'OS X',
+        'browser': 'safari',
+        'browser_version': '15.0',
+        "browserstack.geoLocation": "IE",
+        # "browserstack.local" : "true",
+        'name': 'Safari Test',
+        'build': 'Browserstack_inception_geoloc_IE'
+    },
+    {
+        'os_version': '11',
+        'os': 'Windows',
+        'browser': 'chrome',
+        'browser_version': '96.0',
+        "browserstack.geoLocation": "IE",
+        # "browserstack.local" : "true",
+        'name': 'Chrome Test',
+        'build': 'Browserstack_inception_geoloc_IE'
+}]
+
+
+
+def init(desired_cap):
+    driver = webdriver.Remote(
+        command_executor='https://' + USERNAME + ':' + ACCESSKEY + '@hub-cloud.browserstack.com/wd/hub',
+        desired_capabilities=desired_cap)
     driver.implicitly_wait(IMPLICIT_WAIT_TIME)
     driver.maximize_window()
     return driver
@@ -32,16 +69,13 @@ def cleanup(driver):
     driver.quit()
 
 def get_element_with_xpath(driver, xpath):
-    return WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.XPATH, xpath)))
+    return WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.XPATH, xpath)))
 
 def get_element_with_css(driver, css):
-    return WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, css)))
+    return WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, css)))
 
 
-def test_bstack_inception():
-    # Init
-    driver = init()
-
+def bstack_inception(driver):
     # Go to google
     driver.get(GOOGLE_URL)
 
@@ -75,6 +109,9 @@ def test_bstack_inception():
     # Longer wait time as a live session is being launched at this point
     sleep(WAIT * 7)
 
+    # Wait until the stop session option is visible, it means that the session is launched
+    # get_element_with_css(driver, 'div[id="stop-session"]')
+
     # Click 'got it' on the banner for self-signed certificate
     get_element_with_css(driver, 'button[class="spotlight__button"]').click()
     sleep(WAIT)
@@ -96,10 +133,27 @@ def test_bstack_inception():
     sleep(WAIT)
 
     # Stop the live session
-    get_element_with_css(driver, 'label[class="toolbar-list-item__link__text-wrapper__text"]').click()
+    get_element_with_css(driver, 'div[id="stop-session"]').click()
 
-    # Cleanup
-    cleanup(driver)
+    return 1
+
+
+def test_bstack_inception():
+    # Setup
+    for caps in capabilities:
+        driver = init(caps)
+
+        if (bstack_inception(driver)):
+            driver.execute_script(
+                'browserstack_executor: {"action": "setSessionStatus", "arguments": \
+                {"status":"passed", "reason": "Browserstack inception successful!"}}')
+        else:
+            driver.execute_script(
+                'browserstack_executor: {"action": "setSessionStatus", "arguments": \
+                {"status":"failed", "reason": "Browserstack inception unsuccessful"}}')
+
+        # Cleanup
+        cleanup(driver)
 
 
 
