@@ -24,7 +24,8 @@ USERNAME = os.environ['BROWSERSTACK_USERNAME']
 ACCESSKEY = os.environ['BROWSERSTACK_ACCESS_KEY']
 
 
-capabilities = [{
+capabilities = [
+    {
         'os_version': '10',
         'os': 'Windows',
         'browser': 'firefox',
@@ -32,7 +33,9 @@ capabilities = [{
         "browserstack.geoLocation": "IE",
         # "browserstack.local" : "true",
         'name': 'Firefox test',
-        'build': 'Browserstack_inception_geoloc_IE'
+        'build': 'Browserstack_inception_jenkins_build',
+        # 'browserstack.localIdentifier': 'local_instance_2',
+        'project': 'Technical assignment'
     },
     {
         'os_version': 'Monterey',
@@ -42,7 +45,9 @@ capabilities = [{
         "browserstack.geoLocation": "IE",
         # "browserstack.local" : "true",
         'name': 'Safari Test',
-        'build': 'Browserstack_inception_geoloc_IE'
+        'build': 'Browserstack_inception_jenkins_build',
+        # 'browserstack.localIdentifier': 'local_instance_2',
+        'project': 'Technical assignment'
     },
     {
         'os_version': '11',
@@ -52,8 +57,11 @@ capabilities = [{
         "browserstack.geoLocation": "IE",
         # "browserstack.local" : "true",
         'name': 'Chrome Test',
-        'build': 'Browserstack_inception_geoloc_IE'
-}]
+        'build': 'Browserstack_inception_jenkins_build',
+        # 'browserstack.localIdentifier': 'local_instance_2',
+        'project': 'Technical assignment'
+    }
+]
 
 
 
