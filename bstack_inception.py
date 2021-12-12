@@ -22,6 +22,7 @@ BSTACK_DEMO_AC_EMAIL = "hrishikesh.b+demo@browserstack.com"
 BSTACK_DEMO_AC_PASSWD = "Demoaccount@123"
 USERNAME = os.environ['BROWSERSTACK_USERNAME']
 ACCESSKEY = os.environ['BROWSERSTACK_ACCESS_KEY']
+BUILD_NAME = os.environ['BROWSERSTACK_BUILD_NAME']
 
 
 capabilities = [
@@ -33,7 +34,7 @@ capabilities = [
         "browserstack.geoLocation": "IE",
         # "browserstack.local" : "true",
         'name': 'Firefox test',
-        'build': 'Browserstack_inception_jenkins_build',
+        'build': BUILD_NAME,
         # 'browserstack.localIdentifier': 'local_instance_2',
         'project': 'Technical assignment'
     },
@@ -45,7 +46,7 @@ capabilities = [
         "browserstack.geoLocation": "IE",
         # "browserstack.local" : "true",
         'name': 'Safari Test',
-        'build': 'Browserstack_inception_jenkins_build',
+        'build': BUILD_NAME,
         # 'browserstack.localIdentifier': 'local_instance_2',
         'project': 'Technical assignment'
     },
@@ -57,7 +58,7 @@ capabilities = [
         "browserstack.geoLocation": "IE",
         # "browserstack.local" : "true",
         'name': 'Chrome Test',
-        'build': 'Browserstack_inception_jenkins_build',
+        'build': BUILD_NAME,
         # 'browserstack.localIdentifier': 'local_instance_2',
         'project': 'Technical assignment'
     }
