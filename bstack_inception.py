@@ -11,6 +11,8 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from selenium.webdriver.common.action_chains import ActionChains
 
+from browserstack.local import Local
+
 from time import sleep
 
 
@@ -23,6 +25,7 @@ BSTACK_DEMO_AC_PASSWD = "Demoaccount@123"
 USERNAME = os.environ['BROWSERSTACK_USERNAME']
 ACCESSKEY = os.environ['BROWSERSTACK_ACCESS_KEY']
 BUILD_NAME = os.environ['BROWSERSTACK_BUILD_NAME']
+LOCAL_IDENTIFIER = os.environ['BROWSERSTACK_LOCAL_IDENTIFIER']
 
 
 capabilities = [
@@ -31,11 +34,11 @@ capabilities = [
         'os': 'Windows',
         'browser': 'firefox',
         'browser_version': '94.0',
-        "browserstack.geoLocation": "IE",
-        # "browserstack.local" : "true",
+        # "browserstack.geoLocation": "IE",
+        "browserstack.local" : "true",
+        'browserstack.localIdentifier': LOCAL_IDENTIFIER,
         'name': 'Firefox test',
         'build': BUILD_NAME,
-        # 'browserstack.localIdentifier': 'local_instance_2',
         'project': 'Technical assignment'
     },
     {
@@ -43,11 +46,11 @@ capabilities = [
         'os': 'OS X',
         'browser': 'safari',
         'browser_version': '15.0',
-        "browserstack.geoLocation": "IE",
-        # "browserstack.local" : "true",
+        # "browserstack.geoLocation": "IE",
+        "browserstack.local" : "true",
+        'browserstack.localIdentifier': LOCAL_IDENTIFIER,
         'name': 'Safari Test',
         'build': BUILD_NAME,
-        # 'browserstack.localIdentifier': 'local_instance_2',
         'project': 'Technical assignment'
     },
     {
@@ -55,11 +58,11 @@ capabilities = [
         'os': 'Windows',
         'browser': 'chrome',
         'browser_version': '96.0',
-        "browserstack.geoLocation": "IE",
-        # "browserstack.local" : "true",
+        # "browserstack.geoLocation": "IE",
+        "browserstack.local" : "true",
+        'browserstack.localIdentifier': LOCAL_IDENTIFIER,
         'name': 'Chrome Test',
         'build': BUILD_NAME,
-        # 'browserstack.localIdentifier': 'local_instance_2',
         'project': 'Technical assignment'
     }
 ]
@@ -148,8 +151,13 @@ def bstack_inception(driver):
 
 
 def test_bstack_inception():
-    # Setup
+    bs_local = Local()
+    bs_local_args = {"key": ACCESSKEY, "forcelocal": "true"}
+    bs_local.start(**bs_local_args)
+    sleep(WAIT)
+
     for caps in capabilities:
+        # Setup
         driver = init(caps)
 
         if (bstack_inception(driver)):
@@ -163,6 +171,11 @@ def test_bstack_inception():
 
         # Cleanup
         cleanup(driver)
+
+    #stop the Local instance
+    bs_local.stop()
+
+
 
 
 
