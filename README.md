@@ -3,6 +3,18 @@ Technical assignment - BrowserStack Inception
 
 `bstack_inception.py`
 
+# How to run the test ?
+
+```
+pytest -n 1 bstack_inception.py
+```
+
+The `-n 1` flag is to run one one test at a time because this uses Browserstack live
+and multiple live sessions cannot be launched at once from the same account.
+
+The `-n` flag is available because of the python library `pytest-xdist`.
+
+
 # What does it do?
 
 * visit google.com
