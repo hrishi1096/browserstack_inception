@@ -85,7 +85,6 @@ class TestClass():
         self.test_successful = False
 
     def teardown_method(self):
-        self.driver.quit()
         if self.test_successful:
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": \
@@ -94,6 +93,7 @@ class TestClass():
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": \
                 {"status":"failed", "reason": "Browserstack inception unsuccessful"}}')
+        self.driver.quit()
 
     # Some helper functions
     def get_element_with_xpath(self, xpath):
