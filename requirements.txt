@@ -1,0 +1,5 @@
+pytest==6.2.5
+selenium==4.1.0
+browserstack-local==1.2.3
+pytest-forked==1.4.0
+pytest-xdist==2.5.0
