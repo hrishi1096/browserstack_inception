@@ -58,7 +58,7 @@ capabilities = [
         'os_version': '11',
         'os': 'Windows',
         'browser': 'chrome',
-        'browser_version': '96.0',
+        'browser_version': '95.0',
         'name': 'Chrome Test',
         'build': IDENTIFIER,
         'project': 'Technical assignment',
